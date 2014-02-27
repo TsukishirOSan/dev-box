@@ -28,6 +28,7 @@ class apt_get_update {
     unless => "test -e ${home}/.rvm"
   }
 }
+
 class { 'apt_get_update':
   stage => preinstall
 }
@@ -39,28 +40,12 @@ package { ['sqlite3', 'libsqlite3-dev']:
 }
 
 # --- Packages -----------------------------------------------------------------
-
-package { 'curl':
-  ensure => installed
-}
-
-package { 'build-essential':
-  ensure => installed
-}
-
-package { 'git-core':
-  ensure => installed
-}
-
-# Nokogiri dependencies.
-package { ['libxml2', 'libxml2-dev', 'libxslt1-dev']:
-  ensure => installed
-}
-
-# ExecJS runtime.
-package { 'nodejs':
-  ensure => installed
-}
+notify { "Installing utility packages": }
+include utility
+notify { "Installing build packages": }
+include build_packages
+notify { "Installing security packages": }
+include security_packages
 
 # --- Ruby ---------------------------------------------------------------------
 
@@ -84,14 +69,4 @@ exec { 'install_ruby':
 exec { "${as_vagrant} 'gem install bundler --no-rdoc --no-ri'":
   creates => "${home}/.rvm/bin/bundle",
   require => Exec['install_ruby']
-}
-
-# docker
-notify { "Installing docker": }
-include 'docker'
-notify { "Attempting automatic base image pull": }
-docker::image { 'base': }
-notify { "Attempting manual base image pull": }
-exec { "pull base":
-  require => Exec['docker pull base']
 }

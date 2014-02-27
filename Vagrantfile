@@ -80,11 +80,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #   puppet.manifest_file  = "site.pp"
   # end
 
-  config.vm.provision :shell, inline: "puppet --version"
-  config.vm.provision :shell, :path => "upgrade_puppet.sh"
-  config.vm.provision :shell, inline: "puppet --version"
-  config.vm.provision :puppet
-
+  # config.vm.provision :shell, inline: "puppet --version"
+  # config.vm.provision :shell, :path => "upgrade_puppet.sh"
+  # config.vm.provision :shell, inline: "puppet --version"
+  # config.vm.provision :shell, inline: "puppet module install puppetlabs/postgresql"# -f -i /home/vagrant/puppet/modules"
+  config.vm.provision :puppet do |puppet|
+    puppet.manifests_path = 'puppet/manifests'
+    puppet.module_path    = 'puppet/modules'
+    puppet.options        = '--verbose'
+  end
+  config.vm.provision :shell, path: 'config.sh'
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
   # path, and data_bags path (all relative to this Vagrantfile), and adding
   # some recipes and/or roles.
