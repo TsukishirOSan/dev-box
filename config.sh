@@ -10,14 +10,19 @@
 #     sudo puppet module install $package --force
 # done
 
-# sudo puppet module install puppetlabs/stdlib --force
-# sudo puppet module install puppetlabs/apt --force
-sudo puppet module install puppetlabs/postgresql --force
+sudo puppet module install puppetlabs/stdlib --force
+sudo puppet module install puppetlabs/apt --force
+#sudo puppet module install puppetlabs/postgresql --force
 sudo puppet module install maestrodev/rvm --force
 sudo puppet module install garethr/docker --force
 
 sudo puppet apply /vagrant/puppet/manifests/config.pp
-
+echo
+echo "Adding vagrant PostgreSQL user"
+echo vagrant | sudo -u postgres -S /usr/bin/env psql -U postgres -a -c 'DROP ROLE IF EXISTS vagrant; CREATE ROLE vagrant LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;'
+echo
+echo "Cleaning up"
+echo
 sudo apt-get --yes autoremove
 sudo apt-get --yes clean
 
