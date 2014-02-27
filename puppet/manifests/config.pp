@@ -1,5 +1,3 @@
-class { 'postgresql::server': }
-
 include rvm
 
 rvm::system_user { vagrant: ; }
@@ -18,3 +16,8 @@ class { 'docker':
   dns => '8.8.8.8',
 }
 docker::image { 'base': }
+
+#class { 'postgresql::server': }
+class { 'postgresql::server':
+  postgres_password          => 'vagrant',
+}
