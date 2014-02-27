@@ -25,7 +25,7 @@ docker::image { 'base':
 #}
 
 class setup_db {
-  package { ['postgresql-9.1', 'postgresql-client-9.1', 'postgresql-contrib-9.1']:
+  package { ['postgresql-9.1', 'postgresql-server-dev-9.1', 'postgresql-client-9.1', 'postgresql-contrib-9.1']:
     ensure => present,
   }
 }
