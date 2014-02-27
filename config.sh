@@ -19,7 +19,7 @@ sudo puppet module install garethr/docker --force
 sudo puppet apply /vagrant/puppet/manifests/config.pp
 echo
 echo "Adding vagrant PostgreSQL user"
-echo vagrant | sudo -u postgres -S /usr/bin/env psql -U postgres -a -c 'DROP ROLE IF EXISTS vagrant; CREATE ROLE vagrant LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION PASSWORD vagrant;'
+echo vagrant | sudo -u postgres -S psql -U postgres -a -c "DROP ROLE IF EXISTS vagrant; CREATE ROLE vagrant LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION PASSWORD 'vagrant';"
 echo
 echo "Making unicode the default encoding for databases"
 psql -d postgres -U vagrant -a -c "UPDATE pg_database SET datistemplate = FALSE WHERE datname = 'template1';"
