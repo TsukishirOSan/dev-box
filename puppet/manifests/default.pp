@@ -45,3 +45,9 @@ notify { "Installing build packages": }
 include build_packages
 notify { "Installing security packages": }
 include security_packages
+
+# --- Docker -------------------------------------------------------------------
+
+# package { ['docker.io', 'lxctl', 'aufs-tools', 'ca-certificates']:
+#   ensure => present,
+# }

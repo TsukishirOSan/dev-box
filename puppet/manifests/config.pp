@@ -13,16 +13,16 @@ rvm_system_ruby {
 
 
 class { 'docker':
-  dns => '8.8.8.8',
+ dns => '8.8.8.8',
 }
 docker::image { 'base':
   require => Class['docker'],
 }
 
-#class { 'postgresql::server': }
-#class { 'postgresql::server':
+# class { 'postgresql::server': }
+# class { 'postgresql::server':
 #  postgres_password          => 'vagrant',
-#}
+# }
 
 class setup_db {
   package { ['postgresql-9.1', 'postgresql-server-dev-9.1', 'postgresql-client-9.1', 'postgresql-contrib-9.1']:
@@ -31,3 +31,17 @@ class setup_db {
 }
 
 class { 'setup_db': }
+
+class { '::ntp':
+  restrict => ['127.0.0.1'],
+  service_enable => true,
+  service_ensure => 'running',
+}
+
+class systemd_packages {
+  package { ['systemd-services', 'dh-systemd', 'libsystemd-journal0']:
+    ensure => present,
+  }
+}
+
+class { 'systemd_packages': }

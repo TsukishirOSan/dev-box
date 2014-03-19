@@ -10,8 +10,17 @@
 #     sudo puppet module install $package --force
 # done
 
+echo <<EOF >> /etc/security/limits.conf
+# added for fluentd purposes
+root soft nofile 65536
+root hard nofile 65536
+* soft nofile 65536
+* hard nofile 65536
+EOF
+
 sudo puppet module install puppetlabs/stdlib --force
 sudo puppet module install puppetlabs/apt --force
+sudo puppet module install puppetlabs/ntp --force
 #sudo puppet module install puppetlabs/postgresql --force
 sudo puppet module install maestrodev/rvm --force
 sudo puppet module install garethr/docker --force

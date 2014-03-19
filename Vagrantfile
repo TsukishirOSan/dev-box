@@ -10,13 +10,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "docker-friendly-ubuntu"
+  #config.vm.box = "deimosfr/debian-jessie"
+  config.vm.box = "ffuenf/ubuntu-13.10-server-amd64"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
   #config.vm.box_url = "http://domain.com/path/to/above.box"
   # FROM HERE: http://blog.phusion.nl/2013/11/08/docker-friendly-vagrant-boxes/
-  config.vm.box_url = "https://oss-binaries.phusionpassenger.com/vagrant/boxes/ubuntu-12.04.3-amd64-vbox.box"
+  # config.vm.box_url = "https://oss-binaries.phusionpassenger.com/vagrant/boxes/ubuntu-12.04.3-amd64-vbox.box"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
@@ -41,6 +42,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
+  #config.vm.synced_folder ".", "/vagrant", type: "rsync"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -84,6 +86,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # config.vm.provision :shell, :path => "upgrade_puppet.sh"
   # config.vm.provision :shell, inline: "puppet --version"
   # config.vm.provision :shell, inline: "puppet module install puppetlabs/postgresql"# -f -i /home/vagrant/puppet/modules"
+  config.vm.provision :shell, inline: 'sudo apt-get install --yes puppet'
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = 'puppet/manifests'
     puppet.module_path    = 'puppet/modules'
