@@ -40,9 +40,14 @@ echo "Freezing default encoding, this could take a moment!"
 sudo -u vagrant psql -d postgres -U vagrant -a -c "\c template1; VACUUM FREEZE;"
 echo "Finally done!"
 echo
+echo "Setting up logging"
+echo
+/usr/local/rvm/bin/rvm-shell -l -c "gem install fluentd --no-ri --no-rdoc"
+echo
 echo "Cleaning up"
 echo
 sudo apt-get --yes autoremove
 sudo apt-get --yes clean
+
 
 figlet 'Ready to go!'
