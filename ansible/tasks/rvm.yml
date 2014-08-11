@@ -1,0 +1,9 @@
+---
+- name: "Install RVM"
+  shell: "curl -sSL https://get.rvm.io | bash -s stable"
+- name: "Install Ruby 2.1.2"
+  shell: /usr/local/rvm/bin/rvm-shell -l -c "rvm install 2.1.2 --fuzzy"
+- name: "Make 2.1.2 default"
+  shell: /usr/local/rvm/bin/rvm-shell -l -c "rvm use 2.1.2 --default"
+- name: "Install bundler"
+  shell: /usr/local/rvm/bin/rvm-shell -l -c "gem install bundler"

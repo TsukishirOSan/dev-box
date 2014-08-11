@@ -1,0 +1,13 @@
+---
+- name: install security packages
+  apt: name={{ item }} state=installed install_recommends=no update_cache=yes cache_valid_time=600
+  with_items:
+    - checksecurity
+    - debsums
+    - harden-clients
+    - logcheck
+    - logcheck-database
+    - mlocate
+    - nmap
+    - openssl-blacklist
+    - openssl-blacklist-extra

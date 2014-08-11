@@ -1,0 +1,51 @@
+---
+- name: Packages config
+  hosts: all
+  # remote_user: root
+  tasks:
+    - include: tasks/sec.yml
+    - include: tasks/util.yml
+    - include: tasks/dev.yml
+
+- name: PostgreSQL
+  hosts: all
+  tasks:
+    - name: Install needed PostgreSQL packages and dev files
+      apt: name={{ item }} state=latest install_recommends=no
+      with_items:
+        - postgresql-9.3
+        - postgresql-client-9.3
+        - postgresql-contrib-9.3
+        - postgresql-server-dev-9.3
+    - name: Enable PostgreSQL
+      service: name=postgresql state=started enabled=yes
+
+- name: RVM
+  hosts: all
+  tasks:
+    - include: tasks/rvm.yml
+
+- name: Install pycurl
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Install pycurl
+      apt: pkg=python-pycurl update_cache=yes cache_valid_time=600
+
+##################################
+# - name: Install Docker         #
+#   hosts: all                   #
+#   roles:                       #
+#     - "angstwad.docker_ubuntu" #
+##################################
+
+- name: Essential services
+  hosts: all
+  tasks:
+    - name: ensure ntpd is at the latest version
+      apt: name=ntp state=latest
+      notify:
+        - restart ntpd
+  handlers:
+    - name: restart ntpd
+      service: name=ntp state=restarted

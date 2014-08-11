@@ -1,0 +1,35 @@
+---
+- name: install dev/build packages
+  apt: pkg={{ item }} state=installed install_recommends=no
+  with_items:
+    - autoconf
+    - automake
+    - bison
+    - build-essential
+    - curl
+    - gawk
+    - git
+    - libffi-dev
+    - libgdbm-dev
+    - libgnutls-openssl27
+    - libgnutls26
+    - libncurses5-dev
+    - libpq-dev
+    - libreadline-dev
+    - libreadline6-dev
+    - libsqlite3-dev
+    - libssl-dev
+    - libssl-dev
+    - libtool
+    - libxml2
+    - libxml2-dev
+    - libxslt-dev
+    - libxslt1-dev
+    - libyaml-dev
+    - nodejs
+    - openssl
+    - pkg-config
+    - procps
+    - python-selinux
+    - sqlite3
+    - zlib1g-dev
