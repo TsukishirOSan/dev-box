@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe package('redis') do
+describe package('redis-server') do
   it { should be_installed }
 end
 
@@ -10,5 +10,9 @@ describe service('redis') do
 end
 
 describe port(6379) do
-  it { shuld be_listening }
+  it { should be_listening }
+end
+
+describe package('redis-tools') do
+  it { should be_installed }
 end
