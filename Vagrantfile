@@ -10,8 +10,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  #config.vm.box = "deimosfr/debian-jessie"
-  config.vm.box = "ffuenf/ubuntu-13.10-server-amd64"
+  # config.vm.box = "deimosfr/debian-jessie"
+  config.vm.box = "ubuntu/trusty64"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
@@ -86,13 +86,28 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # config.vm.provision :shell, :path => "upgrade_puppet.sh"
   # config.vm.provision :shell, inline: "puppet --version"
   # config.vm.provision :shell, inline: "puppet module install puppetlabs/postgresql"# -f -i /home/vagrant/puppet/modules"
-  config.vm.provision :shell, inline: 'sudo apt-get install --yes puppet'
-  config.vm.provision :puppet do |puppet|
-    puppet.manifests_path = 'puppet/manifests'
-    puppet.module_path    = 'puppet/modules'
-    puppet.options        = '--verbose'
+
+  config.vm.provision :shell, inline: "apt-get update"
+  config.vm.provision :shell, inline: "apt-get --yes upgrade"
+  config.vm.provision :shell, inline: "apt-get --yes --fix-missing install python-dev libxml2-dev libxslt-dev build-essential python apt-utils ansible aptitude python-apt python-pip"
+#  config.vm.provision :shell, inline: "easy_install pip"
+  config.vm.provision :shell, inline: "pip install ansible"
+  config.vm.provision :shell, inline: "ansible-galaxy --force install -p /vagrant/ansible angstwad.docker_ubuntu"
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.sudo = true
+    ansible.ask_sudo_pass = false
+    ansible.verbose = 'v'
+    ansible.playbook = "ansible/configuration-playbook.yml"
   end
-  config.vm.provision :shell, path: 'config.sh'
+
+  # config.vm.provision :shell, inline: 'sudo apt-get install --yes puppet'
+  # config.vm.provision :puppet do |puppet|
+  #   puppet.manifests_path = 'puppet/manifests'
+  #   puppet.module_path    = 'puppet/modules'
+  #   puppet.options        = '--verbose'
+  # end
+  # config.vm.provision :shell, path: 'config.sh'
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
   # path, and data_bags path (all relative to this Vagrantfile), and adding
   # some recipes and/or roles.
