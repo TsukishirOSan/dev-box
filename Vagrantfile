@@ -97,7 +97,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "ansible" do |ansible|
     ansible.sudo = true
     ansible.ask_sudo_pass = false
-    ansible.verbose = 'v'
     ansible.playbook = "ansible/configuration-playbook.yml"
   end
 

@@ -20,6 +20,16 @@
     - name: Enable PostgreSQL
       service: name=postgresql state=started enabled=yes
 
+- name: Redis
+  hosts: all
+  tasks:
+    - name: Install Redis
+      apt: name=redis-server state=latest install_recommends=no
+    - name: Enable Redis
+      service: name=redis-server state=started enabled=yes
+    - name: Install Redis Tools
+      apt: name=redis-tools state=latest install_recommends=no
+
 - name: RVM
   hosts: all
   tasks:
@@ -49,3 +59,10 @@
   handlers:
     - name: restart ntpd
       service: name=ntp state=restarted
+
+- name: MOTD
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Ensure MOTD file has the right contents
+      template: src=templates/motd.j2 dest=/etc/motd owner=root group=root mode=0644
