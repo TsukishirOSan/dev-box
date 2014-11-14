@@ -42,13 +42,6 @@
     - name: Install pycurl
       apt: pkg=python-pycurl update_cache=yes cache_valid_time=600
 
-##################################
-# - name: Install Docker         #
-#   hosts: all                   #
-#   roles:                       #
-#     - "angstwad.docker_ubuntu" #
-##################################
-
 - name: Essential services
   hosts: all
   tasks:
@@ -56,6 +49,8 @@
       apt: name=ntp state=latest
       notify:
         - restart ntpd
+    - name: handle docker.io install
+      apt: name=docker.io state=latest
   handlers:
     - name: restart ntpd
       service: name=ntp state=restarted
@@ -66,3 +61,9 @@
   tasks:
     - name: Ensure MOTD file has the right contents
       template: src=templates/motd.j2 dest=/etc/motd owner=root group=root mode=0644
+
+- name: systemd stuff
+  hosts: all
+  tasks:
+    - name: Ensure journald present
+      apt: name=libsystemd-journal0 state=latest
