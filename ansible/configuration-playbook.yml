@@ -7,6 +7,14 @@
     - include: tasks/util.yml
     - include: tasks/dev.yml
 
+- name: sysstat
+  hosts: all
+  tasks:
+    - name: ensure sysstat present
+      apt: name=sysstat state=latest install_recommends=no
+    - name: ensure sysstat enabled
+      lineinfile: dest=/etc/default/sysstat state=present regexp="^ENABLED=" line='ENABLED="true"'
+
 - name: PostgreSQL
   hosts: all
   tasks:
