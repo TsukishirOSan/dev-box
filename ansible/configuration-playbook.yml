@@ -75,3 +75,9 @@
   tasks:
     - name: Ensure journald present
       apt: name=libsystemd-journal0 state=latest
+
+- name: Vagrant user group config
+  hosts: all
+  tasks:
+    - name: Add vagrant to groups
+      user: name=vagrant groups=docker,rvm
